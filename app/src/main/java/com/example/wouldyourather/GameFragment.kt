@@ -5,7 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.wouldyourather.databinding.FragmentGameBinding
+
 class GameFragment : Fragment() {
+
+    private lateinit var viewModel: GameViewModel
+
+    private lateinit var binding: FragmentGameBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
