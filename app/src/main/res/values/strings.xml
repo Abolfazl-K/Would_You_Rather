@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Would You Rather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="would_you_rather">Would You Rather!</string>
+    <string name="start">START</string>
+    <string name="option_two_text">Option Two</string>
+    <string name="option_one_text">Option One</string>
+    <string name="skip_text">Skip</string>
 </resources>
