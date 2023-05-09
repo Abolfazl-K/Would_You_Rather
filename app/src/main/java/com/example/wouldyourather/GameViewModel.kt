@@ -7,9 +7,13 @@ import androidx.lifecycle.ViewModel
 class GameViewModel : ViewModel(){
     private lateinit var questions: MutableList<Options>
 
-    private val _onSkipClicked = MutableLiveData<Boolean>()
-    val onSkipClicked : LiveData<Boolean>
-        get() = _onSkipClicked
+//    private val _onSkipClicked = MutableLiveData<Boolean>()
+//    val onSkipClicked : LiveData<Boolean>
+//        get() = _onSkipClicked
+
+    private val _clickState = MutableLiveData<Boolean>()
+    val clickState : LiveData<Boolean>
+        get() = _clickState
 
     private val _question = MutableLiveData<Options>()
     val question : LiveData<Options>
@@ -24,11 +28,13 @@ class GameViewModel : ViewModel(){
         get() = _option2
 
     init {
-        _onSkipClicked.value = false
-        _question.value = questions.removeAt(0)
+        _clickState.value = false
+//        _onSkipClicked.value = false
         resetList()
         nextOption()
-
+        _question.value = questions.removeAt(0)
+        _option1.value = question.value?.option1
+        _option2.value = question.value?.option2
     }
     private fun resetList(){
         questions = mutableListOf(
@@ -44,31 +50,36 @@ class GameViewModel : ViewModel(){
         if(questions.isEmpty()){
             resetList()
         }
-
+        _question.value = questions.removeAt(0)
         _option1.value = question.value?.option1
         _option2.value = question.value?.option2
     }
-    private fun onOption1Clicked(){
-        _option1.value = formatedOption1String(question)
+    fun onOption1Clicked(){
         question.value?.onOption1Clicked()
+        _option1.value = formatedOption1String(question)
+        _option2.value = formatedOption2String(question)
+        _clickState.value = true
     }
 
-    private fun onOption2Clicked(){
-        _option2.value = formatedOption2String(question)
+    fun onOption2Clicked(){
         question.value?.onOption2Clicked()
+        _option1.value = formatedOption1String(question)
+        _option2.value = formatedOption2String(question)
+        _clickState.value = true
     }
 
     fun onSkip(){
-        _onSkipClicked.value = true
+//        _onSkipClicked.value = false
         nextOption()
     }
 
-    private fun formatedOption1String(question: LiveData<Options>): String? {
+    private fun formatedOption1String(question: LiveData<Options>): String {
+        //TODO there is a bug in here somewhere O_o
         return "${question.value?.option1}\n" +
                 "${question.value?.countOption1?.div((question.value?.countOption1?.plus(question.value!!.countOption2)!!))}%"
     }
 
-    private fun formatedOption2String(question: LiveData<Options>): String? {
+    private fun formatedOption2String(question: LiveData<Options>): String {
         return "${question.value?.option2}\n" +
                 "${question.value?.countOption1?.div((question.value?.countOption1?.plus(question.value!!.countOption2)!!))}%"
     }
