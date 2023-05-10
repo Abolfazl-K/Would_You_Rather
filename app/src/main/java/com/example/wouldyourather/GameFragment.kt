@@ -10,6 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.wouldyourather.databinding.FragmentGameBinding
 
+enum class ButtonState{
+    BUTTON_ONE, BUTTON_TWO
+}
 class GameFragment : Fragment() {
 
     private lateinit var viewModel: GameViewModel
@@ -45,7 +48,7 @@ class GameFragment : Fragment() {
             if(viewModel.clickState.value == true){
                 viewModel.onSkip()
             }else{
-                viewModel.onOption1Clicked()
+                viewModel.onOptionClicked(ButtonState.BUTTON_ONE)
             }
         }
 
@@ -53,7 +56,7 @@ class GameFragment : Fragment() {
             if(viewModel.clickState.value == true){
                 viewModel.onSkip()
             }else{
-                viewModel.onOption2Clicked()
+                viewModel.onOptionClicked(ButtonState.BUTTON_TWO)
             }
         }
 

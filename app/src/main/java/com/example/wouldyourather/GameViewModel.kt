@@ -7,10 +7,6 @@ import androidx.lifecycle.ViewModel
 class GameViewModel : ViewModel(){
     private lateinit var questions: MutableList<Options>
 
-//    private val _onSkipClicked = MutableLiveData<Boolean>()
-//    val onSkipClicked : LiveData<Boolean>
-//        get() = _onSkipClicked
-
     private val _clickState = MutableLiveData<Boolean>()
     val clickState : LiveData<Boolean>
         get() = _clickState
@@ -29,7 +25,6 @@ class GameViewModel : ViewModel(){
 
     init {
         _clickState.value = false
-//        _onSkipClicked.value = false
         resetList()
         nextOption()
         _question.value = questions.removeAt(0)
@@ -54,33 +49,24 @@ class GameViewModel : ViewModel(){
         _option1.value = question.value?.option1
         _option2.value = question.value?.option2
     }
-    fun onOption1Clicked(){
-        question.value?.onOption1Clicked()
-        _option1.value = formatedOption1String(question)
-        _option2.value = formatedOption2String(question)
-        _clickState.value = true
-    }
-
-    fun onOption2Clicked(){
-        question.value?.onOption2Clicked()
-        _option1.value = formatedOption1String(question)
-        _option2.value = formatedOption2String(question)
+    fun onOptionClicked(enum: Enum<ButtonState>){
+        if(enum.equals("BUTTON_ONE")){
+            _question.value!!.onOption1Clicked()
+        }else if(enum.equals("BUTTON_TWO")){
+            _question.value!!.onOption2Clicked()
+        }
+        _option1.value = formattedOptionString(question.value!!.option1, question.value!!.countOption1, question.value!!.countOption2)
+        _option2.value = formattedOptionString(question.value!!.option2, question.value!!.countOption2, question.value!!.countOption1)
         _clickState.value = true
     }
 
     fun onSkip(){
-//        _onSkipClicked.value = false
+        _clickState.value = false
         nextOption()
     }
 
-    private fun formatedOption1String(question: LiveData<Options>): String {
+    private fun formattedOptionString(option: String, count1:Int, count2:Int): String {
         //TODO there is a bug in here somewhere O_o
-        return "${question.value?.option1}\n" +
-                "${question.value?.countOption1?.div((question.value?.countOption1?.plus(question.value!!.countOption2)!!))}%"
-    }
-
-    private fun formatedOption2String(question: LiveData<Options>): String {
-        return "${question.value?.option2}\n" +
-                "${question.value?.countOption1?.div((question.value?.countOption1?.plus(question.value!!.countOption2)!!))}%"
+        return "${option}\n"
     }
 }
